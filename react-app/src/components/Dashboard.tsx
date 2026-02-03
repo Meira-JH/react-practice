@@ -1,4 +1,6 @@
+import { memo } from "react";
 import { useFinancialFilter } from "../features/financial-data-filter/useFinancialFilter";
+import type { FinancialAsset } from "../types/financialAsset.types";
 
 export const Dashboard = () => {
 const { query, setQuery, filteredAssets, handleForceUpdate, renderCount } = useFinancialFilter();
@@ -13,11 +15,15 @@ return (
   );
 };
 
-const List = ({ items }: any) => {
+const List = memo(({ items }:{items: FinancialAsset[]}) => {
   console.log("❄️ List rendering...");
   return (
     <ul>
-      {items.map((item: any) => <li key={item.id}>{item.name}</li>)}
+      {items.map((item: FinancialAsset) => <AssetItem key={item.name} item={item} /> )}
     </ul>
   );
-};
+});
+
+const AssetItem = memo(({item}: {item: FinancialAsset}) => { 
+    console.log('Item rendering')
+    return (<li key={item.id}>{item.name}</li>)})
